@@ -7,19 +7,29 @@ const searchBook = () => {
     fetch(url)
     .then(res => res.json())
     .then(data => displayBooks(data.docs));
+    document.getElementById('bookSelf').textContent = '';
 }
 
 const displayBooks = books => {
-    
-    console.log(books.length)
-    
-    /* show book length */
     const bookLength = document.getElementById('book-length');
-    const div = document.createElement('div');
-    div.innerHTML = `Total Book Found: ${books.length}`;
-    bookLength.appendChild(div);
+    /* show book length */
+    if(books.length === 0) {
+        errorMessage.classList.remove('d-none');
+        bookLength.textContent="";
+    }
+    if(books.length){
+        
+    
+        bookLength.innerHTML = `Total Book Found: ${books.length}`;
+    errorMessage.classList.add('d-none');
+    }
+    
+
+    /* show book card */
     const bookSelf = document.getElementById('bookSelf');
     books.forEach(book => {
+
+        /* default text for null found */
     if(
         book.cover_i === undefined || book.author_name === undefined || book.publisher === undefined || book.first_publish_year === undefined
     ) {
@@ -38,6 +48,7 @@ const displayBooks = books => {
         bookSelf.appendChild(makeDiv);
     ;
     }
+        /* Dynamic text for result found */
     else {
         const makeDiv = document.createElement('div');
         makeDiv.classList.add('col');
@@ -54,5 +65,5 @@ const displayBooks = books => {
         bookSelf.appendChild(makeDiv);
     
     }
-})
+});
 }
